@@ -1,0 +1,71 @@
+@if (chargement()) {
+  <p class="lecteur__etat">Chargement...</p>
+} @else if (erreur() || !cours() || !chapitre()) {
+  <section class="conteneur lecteur__etat-bloc">
+    <p>Ce chapitre est introuvable.</p>
+    <a routerLink="/cours" class="bouton">← Retour au catalogue</a>
+  </section>
+} @else if (cours(); as c) { @if (chapitre(); as ch) {
+  <section class="conteneur lecteur anim-apparition">
+    <a [routerLink]="['/cours', c.id]" class="lecteur__retour">← {{ c.titre }}</a>
+
+    <div class="lecteur__entete">
+      <h1>{{ ch.titre }}</h1>
+      <span class="etiquette">Chapitre {{ ch.ordre }} / {{ c.chapitres.length }}</span>
+    </div>
+
+    @if (!aAcces()) {
+      <div class="carte lecteur__verrou">
+        <p class="lecteur__verrou-icone">🔒</p>
+        <h2>Ce contenu est reserve aux etudiants inscrits</h2>
+        <p>Inscris-toi au cours « {{ c.titre }} » pour debloquer ce chapitre et suivre ta progression.</p>
+        <a [routerLink]="['/cours', c.id]" class="bouton">Voir le cours et m'inscrire</a>
+      </div>
+    } @else {
+      <div class="carte lecteur__contenu">
+        @if (urlIncorporeeSure(); as url) {
+          <div class="lecteur__video">
+            <iframe [src]="url" title="Ressource du chapitre" allowfullscreen></iframe>
+          </div>
+        } @else if (ch.lienRessource) {
+          <a [href]="ch.lienRessource" target="_blank" rel="noopener" class="lecteur__carte-lien">
+            <span class="lecteur__carte-lien-icone">🔗</span>
+            <span>
+              <strong>Ouvrir la ressource</strong>
+              <small>{{ ch.lienRessource }}</small>
+            </span>
+            <span>↗</span>
+          </a>
+        } @else {
+          <p class="lecteur__sans-ressource">
+            Ce chapitre n'a pas de ressource associee pour le moment. Tu peux tout de meme le marquer comme termine.
+          </p>
+        }
+
+        <button
+          type="button"
+          class="bouton lecteur__bouton-termine"
+          [class.bouton--secondaire]="estTermine()"
+          [disabled]="basculeEnCours()"
+          (click)="basculerTermine()"
+        >
+          {{ estTermine() ? '✓ Chapitre termine' : 'Marquer comme termine' }}
+        </button>
+      </div>
+    }
+
+    <nav class="lecteur__navigation">
+      @if (precedent(); as p) {
+        <a [routerLink]="['/cours', c.id, 'chapitres', p.id]" class="lecteur__nav-lien">← {{ p.titre }}</a>
+      } @else {
+        <span></span>
+      }
+
+      @if (suivant(); as s) {
+        <a [routerLink]="['/cours', c.id, 'chapitres', s.id]" class="lecteur__nav-lien lecteur__nav-lien--suivant">
+          {{ s.titre }} →
+        </a>
+      }
+    </nav>
+  </section>
+} }

@@ -1,0 +1,164 @@
+.tableau {
+  padding: 3rem 1.5rem 4rem;
+}
+
+.tableau__entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0.4rem 0 0;
+  }
+}
+
+.tableau__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.25rem;
+  margin-bottom: 2rem;
+}
+
+.tableau__kpi {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: var(--carte);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6a6378;
+}
+
+.tableau__kpi-valeur {
+  font-family: var(--police-titre);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--secondaire);
+}
+
+.tableau__recherche {
+  width: 100%;
+  max-width: 420px;
+  border: 2.5px solid var(--bordure);
+  border-radius: 999px;
+  padding: 0.7rem 1.1rem;
+  font-size: 0.9rem;
+  font-family: var(--police-texte);
+  margin-bottom: 1.5rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--primaire);
+  }
+}
+
+.tableau__lignes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.tableau__ligne {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1.1rem 1.5rem;
+}
+
+.tableau__ligne-titre {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+
+  h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+}
+
+.tableau__inactif {
+  background: #e4e1ea;
+}
+
+.tableau__ligne-stats {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #6a6378;
+}
+
+.tableau__ligne-actions {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.tableau__formulaire {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+  background: var(--carte);
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  input,
+  textarea {
+    border: 2.5px solid var(--bordure);
+    border-radius: 0.75rem;
+    padding: 0.65rem 0.85rem;
+    font-size: 0.95rem;
+    font-family: var(--police-texte);
+    resize: vertical;
+
+    &:focus {
+      outline: none;
+      border-color: var(--primaire);
+    }
+  }
+
+  button {
+    justify-self: start;
+  }
+}
+
+.tableau__champ-pleine-largeur {
+  grid-column: 1 / -1;
+}
+
+.tableau__erreur {
+  grid-column: 1 / -1;
+  background: #ffe3da;
+  border: 2px solid var(--primaire-fonce);
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.tableau__etat {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-weight: 600;
+  color: #6a6378;
+}
+
+@media (max-width: 640px) {
+  .tableau__formulaire {
+    grid-template-columns: 1fr;
+  }
+}

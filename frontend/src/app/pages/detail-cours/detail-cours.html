@@ -1,0 +1,189 @@
+@if (chargement()) {
+  <p class="detail__etat">Chargement du cours...</p>
+} @else if (erreur()) {
+  <section class="conteneur detail__etat-bloc">
+    <p>{{ erreur() }}</p>
+    <a routerLink="/cours" class="bouton">← Retour au catalogue</a>
+  </section>
+} @else if (cours(); as c) {
+  <section class="detail__entete">
+    <div class="conteneur detail__entete-contenu anim-apparition">
+      <a routerLink="/cours" class="detail__retour">← Tous les cours</a>
+
+      <div class="detail__etiquettes">
+        @if (c.categorie) {
+          <span class="etiquette">{{ c.categorie }}</span>
+        }
+        @if (!c.actif) {
+          <span class="etiquette detail__etiquette-inactif">Cours desactive</span>
+        }
+      </div>
+
+      <div class="detail__titre-ligne">
+        <h1>{{ c.titre }}</h1>
+        @if (auth.utilisateurConnecte()?.role === 'ETUDIANT') {
+          <button
+            type="button"
+            class="detail__coeur"
+            [class.detail__coeur--actif]="estFavori()"
+            [disabled]="favoriEnCours()"
+            [attr.aria-label]="estFavori() ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+            (click)="basculerFavori()"
+          >
+            {{ estFavori() ? '❤️' : '🤍' }}
+          </button>
+        }
+      </div>
+
+      <p class="detail__meta">👤 {{ c.enseignantNom }} · 🎓 {{ c.nombreInscrits }} etudiants inscrits</p>
+
+      @if (inscriptionReussie()) {
+        @if (progression().pourcentage === 100) {
+          <p class="detail__badge-termine">🎉 Cours termine !</p>
+        } @else {
+          <div class="detail__barre-progression" [attr.aria-label]="progression().pourcentage + '% complete'">
+            <div class="detail__barre-progression-remplissage" [style.width.%]="progression().pourcentage"></div>
+          </div>
+          <span class="detail__progression-texte">{{ progression().pourcentage }}% termine</span>
+        }
+      }
+    </div>
+  </section>
+
+  <section class="conteneur detail__corps">
+    <div class="detail__principal">
+      @if (estProprietaire() && afficherEdition()) {
+        <form [formGroup]="formulaireCours" (ngSubmit)="enregistrerModification()" class="carte detail__formulaire-edition anim-apparition">
+          <h2>Modifier le cours</h2>
+          <label>
+            Titre
+            <input type="text" formControlName="titre" />
+          </label>
+          <label>
+            Categorie
+            <input type="text" formControlName="categorie" />
+          </label>
+          <label>
+            Description
+            <textarea formControlName="description" rows="3"></textarea>
+          </label>
+          @if (erreurModification()) {
+            <p class="detail__erreur">⚠️ {{ erreurModification() }}</p>
+          }
+          <div class="detail__actions-edition">
+            <button class="bouton" type="submit" [disabled]="modificationEnCours()">
+              {{ modificationEnCours() ? 'Enregistrement...' : 'Enregistrer' }}
+            </button>
+            <button class="bouton bouton--secondaire" type="button" (click)="afficherEdition.set(false)">
+              Annuler
+            </button>
+          </div>
+        </form>
+      }
+
+      <h2>A propos de ce cours</h2>
+      <p>{{ c.description }}</p>
+
+      @if (estProprietaire() && !afficherEdition()) {
+        <div class="detail__outils-proprietaire">
+          <button class="bouton bouton--secondaire" type="button" (click)="afficherEdition.set(true)">
+            ✏️ Modifier le cours
+          </button>
+          <button class="bouton bouton--secondaire" type="button" [disabled]="statutEnCours()" (click)="basculerStatutCours()">
+            {{ c.actif ? '⏸ Desactiver' : '▶ Activer' }}
+          </button>
+        </div>
+      }
+
+      <h2>Contenu du cours</h2>
+      <p class="detail__chapitres-aide">Clique sur un chapitre pour l'ouvrir, voir sa ressource et le marquer comme termine.</p>
+      <ol class="detail__chapitres">
+        @for (chapitre of c.chapitres; track chapitre.id) {
+          <li class="detail__chapitre-ligne">
+            <a [routerLink]="['/cours', c.id, 'chapitres', chapitre.id]" class="carte detail__chapitre">
+              @if (progression().chapitresTerminesIds.includes(chapitre.id)) {
+                <span class="detail__chapitre-numero detail__chapitre-numero--coche">✓</span>
+              } @else {
+                <span class="detail__chapitre-numero">{{ chapitre.ordre }}</span>
+              }
+
+              <span class="detail__chapitre-titre">{{ chapitre.titre }}</span>
+
+              @if (chapitre.aUneRessource) {
+                <span class="detail__chapitre-badge" [class.detail__chapitre-badge--verrou]="!chapitre.lienRessource">
+                  {{ chapitre.lienRessource ? '▶ Ressource' : '🔒 Ressource' }}
+                </span>
+              }
+
+              <span class="detail__chapitre-chevron">→</span>
+            </a>
+
+            @if (estProprietaire()) {
+              <button
+                type="button"
+                class="detail__chapitre-supprimer"
+                [disabled]="suppressionChapitreEnCours() === chapitre.id"
+                [attr.aria-label]="'Supprimer ' + chapitre.titre"
+                (click)="supprimerChapitre(chapitre.id)"
+              >
+                🗑
+              </button>
+            }
+          </li>
+        } @empty {
+          <p>Les chapitres de ce cours seront bientot disponibles.</p>
+        }
+      </ol>
+
+      @if (estProprietaire()) {
+        <div class="detail__gestion-chapitres">
+          @if (!afficherFormulaireChapitre()) {
+            <button class="bouton bouton--secondaire" type="button" (click)="afficherFormulaireChapitre.set(true)">
+              + Ajouter un chapitre
+            </button>
+          } @else {
+            <form [formGroup]="formulaireChapitre" (ngSubmit)="ajouterChapitre()" class="detail__formulaire-chapitre">
+              <input type="text" formControlName="titre" placeholder="Titre du nouveau chapitre" />
+              <input type="url" formControlName="lienRessource" placeholder="Lien de la ressource (video, article...) - optionnel" />
+              <button class="bouton" type="submit" [disabled]="ajoutEnCours()">
+                {{ ajoutEnCours() ? 'Ajout...' : 'Ajouter' }}
+              </button>
+            </form>
+          }
+        </div>
+      }
+
+      @if (participants().length > 0) {
+        <h2>Qui suit ce cours</h2>
+        <ul class="detail__participants">
+          @for (p of participants(); track p.nomAffiche) {
+            <li class="etiquette detail__participant" [class.detail__participant--termine]="p.coursTermine">
+              {{ p.nomAffiche }} @if (p.coursTermine) { <span>✓</span> }
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <aside class="carte detail__inscription">
+      @if (inscriptionReussie()) {
+        <p class="detail__succes">✅ Tu es inscrit a ce cours !</p>
+      } @else if (!auth.estConnecte()) {
+        <p>Connecte-toi pour t'inscrire a ce cours.</p>
+        <a routerLink="/connexion" class="bouton">Se connecter</a>
+      } @else if (auth.utilisateurConnecte()?.role !== 'ETUDIANT') {
+        <p>Seuls les comptes etudiants peuvent s'inscrire a un cours.</p>
+      } @else if (!c.actif) {
+        <p>Ce cours est actuellement desactive par son enseignant.</p>
+      } @else {
+        <p>Pret a commencer ?</p>
+        @if (erreurInscription()) {
+          <p class="detail__erreur">⚠️ {{ erreurInscription() }}</p>
+        }
+        <button class="bouton" type="button" [disabled]="inscriptionEnCours()" (click)="sInscrire()">
+          {{ inscriptionEnCours() ? 'Inscription...' : "S'inscrire au cours" }}
+        </button>
+      }
+    </aside>
+  </section>
+}

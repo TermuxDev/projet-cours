@@ -1,0 +1,35 @@
+<svg
+  class="mascotte"
+  [class.mascotte--petite]="taille() === 'petite'"
+  [class.mascotte--grande]="taille() === 'grande'"
+  viewBox="0 0 200 200"
+  role="img"
+  aria-label="Hibou professeur, mascotte de Cours+"
+>
+  <ellipse class="mascotte__aile mascotte__aile--gauche" cx="42" cy="128" rx="18" ry="30" />
+  <ellipse class="mascotte__aile mascotte__aile--droite" cx="158" cy="128" rx="18" ry="30" />
+
+  <polygon class="mascotte__tuft" points="68,52 58,18 84,44" />
+  <polygon class="mascotte__tuft" points="132,52 142,18 116,44" />
+
+  <ellipse class="mascotte__corps" cx="100" cy="122" rx="62" ry="58" />
+  <ellipse class="mascotte__ventre" cx="100" cy="132" rx="38" ry="36" />
+
+  <g class="mascotte__yeux">
+    <circle class="mascotte__oeil-fond" cx="78" cy="104" r="17" />
+    <circle class="mascotte__oeil-fond" cx="122" cy="104" r="17" />
+    <circle class="mascotte__pupille" cx="78" cy="104" r="7" />
+    <circle class="mascotte__pupille" cx="122" cy="104" r="7" />
+    <rect class="mascotte__paupiere" x="61" y="87" width="34" height="34" rx="17" />
+    <rect class="mascotte__paupiere" x="105" y="87" width="34" height="34" rx="17" />
+  </g>
+
+  <polygon class="mascotte__bec" points="100,112 90,126 110,126" />
+
+  <g class="mascotte__chapeau">
+    <rect x="80" y="40" width="40" height="14" rx="3" />
+    <polygon points="62,34 138,34 100,14" />
+    <circle class="mascotte__gland" cx="138" cy="34" r="4" />
+    <line class="mascotte__gland-fil" x1="138" y1="34" x2="130" y2="52" />
+  </g>
+</svg>

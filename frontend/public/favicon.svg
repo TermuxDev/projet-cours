@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect x="3" y="3" width="58" height="58" rx="16" fill="#fbf4e8" stroke="#1f1730" stroke-width="2"/>
+
+  <polygon points="18,10 46,10 32,2" fill="#1f1730"/>
+  <rect x="24" y="10" width="16" height="6" rx="1.5" fill="#1f1730"/>
+
+  <ellipse cx="32" cy="38" rx="21" ry="19" fill="#4a2e83" stroke="#1f1730" stroke-width="2.5"/>
+  <ellipse cx="32" cy="42" rx="12" ry="11" fill="#fbf4e8" stroke="#1f1730" stroke-width="2"/>
+
+  <ellipse cx="24" cy="33" rx="7" ry="7" fill="#ffffff" stroke="#1f1730" stroke-width="2">
+    <animate attributeName="ry" values="7;7;1;7;7" keyTimes="0;0.86;0.9;0.94;1" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="40" cy="33" rx="7" ry="7" fill="#ffffff" stroke="#1f1730" stroke-width="2">
+    <animate attributeName="ry" values="7;7;1;7;7" keyTimes="0;0.86;0.9;0.94;1" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="24" cy="33" rx="3" ry="3" fill="#1f1730">
+    <animate attributeName="ry" values="3;3;0.3;3;3" keyTimes="0;0.86;0.9;0.94;1" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+  <ellipse cx="40" cy="33" rx="3" ry="3" fill="#1f1730">
+    <animate attributeName="ry" values="3;3;0.3;3;3" keyTimes="0;0.86;0.9;0.94;1" dur="4s" repeatCount="indefinite"/>
+  </ellipse>
+
+  <polygon points="32,40 27,47 37,47" fill="#ffc23c" stroke="#1f1730" stroke-width="2" stroke-linejoin="round"/>
+</svg>

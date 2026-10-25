@@ -1,0 +1,87 @@
+.pied {
+  margin-top: 3rem;
+  background: var(--secondaire);
+  color: #fff;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.1) 2px, transparent 2px);
+  background-size: 18px 18px;
+}
+
+.pied__grille {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr 1fr;
+  gap: 2rem;
+  padding: 3rem 1.5rem 2rem;
+}
+
+.pied__bloc {
+  h3, h4 {
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    opacity: 0.85;
+    font-size: 0.9rem;
+    margin: 0 0 0.75rem;
+  }
+}
+
+.pied__plus {
+  color: var(--primaire);
+}
+
+.pied__liens {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    opacity: 0.9;
+
+    &:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  }
+}
+
+.pied__contact {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    opacity: 0.9;
+
+    &:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  }
+}
+
+.pied__bas {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 1.1rem 1.5rem;
+  font-size: 0.78rem;
+  opacity: 0.75;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  .pied__grille {
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    padding: 2.5rem 1.5rem 1.75rem;
+    text-align: left;
+  }
+}

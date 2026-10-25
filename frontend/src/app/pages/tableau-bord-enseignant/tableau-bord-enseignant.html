@@ -1,0 +1,105 @@
+<section class="conteneur tableau">
+  <div class="tableau__entete anim-apparition">
+    <div>
+      <span class="etiquette">Espace enseignant</span>
+      <h1>Mes cours</h1>
+    </div>
+    <button class="bouton" type="button" (click)="afficherFormulaire.set(!afficherFormulaire())">
+      {{ afficherFormulaire() ? 'Annuler' : '+ Creer un cours' }}
+    </button>
+  </div>
+
+  <div class="tableau__kpis">
+    <div class="carte tableau__kpi">
+      <span class="tableau__kpi-valeur">{{ mesCours().length }}</span>
+      <span>Cours</span>
+    </div>
+    <div class="carte tableau__kpi">
+      <span class="tableau__kpi-valeur">{{ nombreActifs() }}</span>
+      <span>Actifs</span>
+    </div>
+    <div class="carte tableau__kpi">
+      <span class="tableau__kpi-valeur">{{ nombreInscritsTotal() }}</span>
+      <span>Inscriptions</span>
+    </div>
+  </div>
+
+  @if (afficherFormulaire()) {
+    <form [formGroup]="formulaire" (ngSubmit)="creerCours()" class="carte tableau__formulaire anim-apparition">
+      <label>
+        Titre du cours
+        <input type="text" formControlName="titre" placeholder="Ex. Initiation a Angular" />
+      </label>
+      <label>
+        Categorie
+        <input type="text" formControlName="categorie" placeholder="Ex. Informatique" />
+      </label>
+      <label class="tableau__champ-pleine-largeur">
+        Description
+        <textarea formControlName="description" rows="3" placeholder="Decris le contenu du cours..."></textarea>
+      </label>
+
+      @if (erreur()) {
+        <p class="tableau__erreur">⚠️ {{ erreur() }}</p>
+      }
+
+      <button class="bouton" type="submit" [disabled]="enCours()">
+        {{ enCours() ? 'Creation...' : 'Publier le cours' }}
+      </button>
+    </form>
+  }
+
+  @if (mesCours().length > 0) {
+    <input
+      class="tableau__recherche"
+      type="search"
+      placeholder="Rechercher parmi mes cours..."
+      [ngModel]="recherche()"
+      (ngModelChange)="rechercher($event)"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  }
+
+  @if (chargement()) {
+    <p class="tableau__etat">Chargement de tes cours...</p>
+  } @else if (mesCours().length === 0) {
+    <p class="tableau__etat">Tu n'as pas encore de cours. Cree le premier !</p>
+  } @else if (coursFiltres().length === 0) {
+    <p class="tableau__etat">Aucun cours ne correspond a ta recherche.</p>
+  } @else {
+    <div class="tableau__lignes">
+      @for (cours of coursPage(); track cours.id) {
+        <div class="carte tableau__ligne">
+          <div class="tableau__ligne-info">
+            <div class="tableau__ligne-titre">
+              <h3>{{ cours.titre }}</h3>
+              <span class="etiquette" [class.tableau__inactif]="!cours.actif">
+                {{ cours.actif ? 'Actif' : 'Inactif' }}
+              </span>
+            </div>
+            <span class="tableau__ligne-stats">
+              🎓 {{ cours.nombreInscrits }} inscrits · 📘 {{ cours.nombreChapitres }} chapitres
+            </span>
+          </div>
+          <div class="tableau__ligne-actions">
+            <a [routerLink]="['/cours', cours.id]" class="bouton bouton--secondaire">Gerer</a>
+            <button
+              class="bouton bouton--secondaire"
+              type="button"
+              [disabled]="statutEnCours() === cours.id"
+              (click)="basculerStatut(cours)"
+            >
+              {{ cours.actif ? 'Desactiver' : 'Activer' }}
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+    <app-pagination
+      [pageActuelle]="pageActuelle()"
+      [totalElements]="coursFiltres().length"
+      [taillePage]="taillePage"
+      (changerPage)="pageActuelle.set($event)"
+    />
+  }
+</section>

@@ -1,0 +1,69 @@
+<section class="conteneur oubli">
+  <div class="carte oubli__carte anim-apparition">
+    <app-mascotte taille="grande" />
+
+    @if (etape() === 'email') {
+      <h1>Mot de passe <span class="souligne">oublie</span> ?</h1>
+      <p class="oubli__sous-titre">Indique ton e-mail, on t'envoie un code pour en choisir un nouveau.</p>
+
+      <form [formGroup]="formulaireEmail" (ngSubmit)="soumettreEmail()" class="oubli__formulaire">
+        <label>
+          Adresse e-mail
+          <input type="email" formControlName="email" placeholder="toi@exemple.com" />
+        </label>
+
+        <button type="submit" class="bouton" [disabled]="enCours()">
+          {{ enCours() ? 'Envoi...' : 'Recevoir un code' }}
+        </button>
+      </form>
+    } @else {
+      <h1>Choisis un <span class="souligne">nouveau mot de passe</span></h1>
+      <p class="oubli__sous-titre">
+        Si un compte existe pour <strong>{{ formulaireEmail.controls.email.value }}</strong>, un code vient d'etre envoye.
+      </p>
+
+      <form [formGroup]="formulaireReinitialisation" (ngSubmit)="soumettreReinitialisation()" class="oubli__formulaire">
+        <label>
+          Code recu par e-mail
+          <input
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            formControlName="code"
+            placeholder="123456"
+            class="oubli__code"
+          />
+        </label>
+
+        <label>
+          Nouveau mot de passe
+          <span class="oubli__champ-mdp">
+            <input
+              [type]="motDePasseVisible() ? 'text' : 'password'"
+              formControlName="nouveauMotDePasse"
+              placeholder="6 caracteres minimum"
+            />
+            <button
+              type="button"
+              class="oubli__oeil"
+              [attr.aria-label]="motDePasseVisible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+              (click)="motDePasseVisible.set(!motDePasseVisible())"
+            >
+              {{ motDePasseVisible() ? '🙈' : '👁️' }}
+            </button>
+          </span>
+        </label>
+
+        @if (erreur()) {
+          <p class="oubli__erreur">⚠️ {{ erreur() }}</p>
+        }
+
+        <button type="submit" class="bouton" [disabled]="enCours()">
+          {{ enCours() ? 'Validation...' : 'Reinitialiser mon mot de passe' }}
+        </button>
+      </form>
+    }
+
+    <a routerLink="/connexion" class="oubli__retour">← Retour a la connexion</a>
+  </div>
+</section>

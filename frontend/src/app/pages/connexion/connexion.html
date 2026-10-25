@@ -1,0 +1,49 @@
+<section class="conteneur connexion">
+  <div class="carte connexion__carte anim-apparition">
+    <app-mascotte taille="grande" />
+
+    <h1>Content de te <span class="souligne">revoir</span> !</h1>
+    <p class="connexion__sous-titre">Connecte-toi pour retrouver tes cours et poursuivre ton apprentissage.</p>
+
+    <form [formGroup]="formulaire" (ngSubmit)="soumettre()" class="connexion__formulaire">
+      <label>
+        Adresse e-mail
+        <input type="email" formControlName="email" placeholder="toi@exemple.com" />
+      </label>
+
+      <label>
+        Mot de passe
+        <span class="connexion__champ-mdp">
+          <input
+            [type]="motDePasseVisible() ? 'text' : 'password'"
+            formControlName="motDePasse"
+            placeholder="••••••••"
+          />
+          <button
+            type="button"
+            class="connexion__oeil"
+            [attr.aria-label]="motDePasseVisible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+            (click)="motDePasseVisible.set(!motDePasseVisible())"
+          >
+            {{ motDePasseVisible() ? '🙈' : '👁️' }}
+          </button>
+        </span>
+      </label>
+
+      @if (erreur()) {
+        <p class="connexion__erreur">⚠️ {{ erreur() }}</p>
+      }
+
+      <button type="submit" class="bouton" [disabled]="enCours()">
+        {{ enCours() ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <p class="connexion__bas">
+      Pas de compte ? <a routerLink="/inscription">S'inscrire</a>
+      · <a routerLink="/mot-de-passe-oublie">Mot de passe oublie ?</a>
+    </p>
+
+    <a routerLink="/cours" class="connexion__retour">← Continuer sans se connecter</a>
+  </div>
+</section>

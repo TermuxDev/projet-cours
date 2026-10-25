@@ -1,0 +1,10 @@
+# Identifiants reels (voir demarage/configuration-locale.md)
+backend/src/main/resources/application-local.properties
+
+# Backend
+backend/target/
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/

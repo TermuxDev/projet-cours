@@ -1,0 +1,34 @@
+<header class="entete">
+  <div class="conteneur entete__barre">
+    <a routerLink="/cours" class="entete__marque">
+      <app-mascotte taille="petite" />
+      <span>Cours<span class="entete__plus">+</span></span>
+    </a>
+
+    <nav class="entete__nav">
+      <a routerLink="/cours" routerLinkActive="est-actif">Catalogue</a>
+      <a routerLink="/a-propos" routerLinkActive="est-actif">A propos</a>
+      @if (auth.utilisateurConnecte()?.role === 'ETUDIANT') {
+        <a routerLink="/etudiant" routerLinkActive="est-actif">Mon espace</a>
+      }
+      @if (auth.utilisateurConnecte()?.role === 'ENSEIGNANT') {
+        <a routerLink="/enseignant" routerLinkActive="est-actif">Mes cours</a>
+      }
+      @if (auth.utilisateurConnecte()?.role === 'ADMINISTRATEUR') {
+        <a routerLink="/admin" routerLinkActive="est-actif">Administration</a>
+      }
+    </nav>
+
+    <div class="entete__action">
+      @if (auth.estConnecte()) {
+        <span class="entete__bonjour">Bonjour {{ auth.utilisateurConnecte()?.prenom }} 👋</span>
+        <button class="bouton bouton--secondaire" type="button" (click)="auth.deconnexion()">
+          Deconnexion
+        </button>
+      } @else {
+        <a routerLink="/inscription" class="entete__lien-inscription">Inscription</a>
+        <a routerLink="/connexion" class="bouton">Connexion</a>
+      }
+    </div>
+  </div>
+</header>

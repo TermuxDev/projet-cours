@@ -1,0 +1,91 @@
+<section class="conteneur apropos__hero">
+  <div class="apropos__hero-texte anim-apparition">
+    <span class="etiquette">Notre histoire</span>
+    <h1>Apprendre autrement,<br />un <span class="souligne">chapitre</span> a la fois.</h1>
+    <p>
+      Cours+ n'est pas une simple liste de cours : c'est un parcours. Tu t'inscris, tu avances
+      chapitre par chapitre, tu coches ce que tu as termine, et tu vois ta progression grandir.
+    </p>
+    @if (!estConnecte()) {
+      <div class="apropos__cta">
+        <a routerLink="/inscription" class="bouton">Creer mon compte</a>
+        <a routerLink="/cours" class="bouton bouton--secondaire">Voir les cours</a>
+      </div>
+    } @else {
+      <a routerLink="/cours" class="bouton">Explorer le catalogue</a>
+    }
+  </div>
+
+  <app-mascotte taille="grande" class="apropos__mascotte" />
+</section>
+
+<section class="conteneur apropos__stats anim-apparition">
+  <div class="carte apropos__stat">
+    <span class="apropos__stat-valeur">{{ nombreCours() }}</span>
+    <span>Cours disponibles</span>
+  </div>
+  <div class="carte apropos__stat">
+    <span class="apropos__stat-valeur">{{ nombreEtudiants() }}</span>
+    <span>Etudiants</span>
+  </div>
+  <div class="carte apropos__stat">
+    <span class="apropos__stat-valeur">{{ nombreEnseignants() }}</span>
+    <span>Enseignants</span>
+  </div>
+</section>
+
+<section class="conteneur apropos__etapes">
+  <h2>Comment ca marche</h2>
+  <div class="apropos__grille-etapes">
+    <div class="carte apropos__etape">
+      <span class="apropos__etape-numero">1</span>
+      <h3>Decouvre</h3>
+      <p>Parcours le catalogue, filtre par categorie, trouve le cours qui te correspond.</p>
+    </div>
+    <div class="carte apropos__etape">
+      <span class="apropos__etape-numero">2</span>
+      <h3>Inscris-toi</h3>
+      <p>Cree ton compte en 2 minutes, confirme ton e-mail avec le code recu, et rejoins un cours.</p>
+    </div>
+    <div class="carte apropos__etape">
+      <span class="apropos__etape-numero">3</span>
+      <h3>Apprends</h3>
+      <p>Ouvre chaque chapitre, consulte sa ressource (video, article), a ton rythme.</p>
+    </div>
+    <div class="carte apropos__etape">
+      <span class="apropos__etape-numero">4</span>
+      <h3>Progresse</h3>
+      <p>Marque chaque chapitre termine et regarde ta barre de progression se remplir.</p>
+    </div>
+  </div>
+</section>
+
+<section class="conteneur apropos__projet">
+  <div class="carte apropos__projet-carte">
+    <h2>Le projet derriere Cours+</h2>
+    <p>
+      Cours+ est un projet academique concu et developpe par <strong>Diomande Keuwe Mickael</strong>,
+      dans le cadre des modules <strong>Java</strong> et <strong>Administration SQL Server</strong>.
+      L'objectif : construire une plateforme complete - base de donnees relationnelle, API REST
+      Spring Boot et interface Angular - en respectant les regles metier d'une vraie application
+      d'apprentissage en ligne, de l'inscription a la validation de progression.
+    </p>
+  </div>
+</section>
+
+<section class="conteneur apropos__faq">
+  <h2>Questions frequentes</h2>
+  <div class="apropos__liste-faq">
+    @for (question of questions; track question.titre; let i = $index) {
+      <div class="carte apropos__question" [class.apropos__question--ouverte]="questionOuverte() === i">
+        <button type="button" class="apropos__question-bouton" (click)="basculerQuestion(i)">
+          <span>{{ question.titre }}</span>
+          <span class="apropos__question-icone">{{ questionOuverte() === i ? '−' : '+' }}</span>
+        </button>
+        @if (questionOuverte() === i) {
+          <p class="apropos__question-reponse">{{ question.reponse }}</p>
+        }
+      </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,102 @@
+.connexion {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.connexion__carte {
+  width: 100%;
+  max-width: 440px;
+  padding: 2.5rem 2.25rem;
+  text-align: center;
+  background: var(--carte);
+}
+
+.connexion__sous-titre {
+  color: #5a5368;
+}
+
+.connexion__formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+  margin-top: 1.5rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  input {
+    width: 100%;
+    border: 2.5px solid var(--bordure);
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    font-size: 1rem;
+    font-family: var(--police-texte);
+
+    &:focus {
+      outline: none;
+      border-color: var(--primaire);
+    }
+  }
+
+  button[type='submit'] {
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+}
+
+.connexion__champ-mdp {
+  position: relative;
+  display: block;
+
+  input {
+    padding-right: 2.75rem;
+  }
+}
+
+.connexion__oeil {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.connexion__erreur {
+  background: #ffe3da;
+  border: 2px solid var(--primaire-fonce);
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.connexion__bas {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  color: #6a6378;
+
+  a {
+    color: var(--secondaire);
+    font-weight: 700;
+  }
+}
+
+.connexion__retour {
+  display: inline-block;
+  margin-top: 0.75rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--secondaire);
+}

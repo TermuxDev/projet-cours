@@ -1,0 +1,173 @@
+<section class="conteneur admin">
+  <span class="etiquette">Espace administrateur</span>
+  <h1>Administration de la plateforme</h1>
+
+  <nav class="admin__onglets">
+    <button type="button" [class.est-actif]="onglet() === 'apercu'" (click)="onglet.set('apercu')">
+      Vue d'ensemble
+    </button>
+    <button type="button" [class.est-actif]="onglet() === 'utilisateurs'" (click)="onglet.set('utilisateurs')">
+      Utilisateurs ({{ utilisateurs().length }})
+    </button>
+    <button type="button" [class.est-actif]="onglet() === 'cours'" (click)="onglet.set('cours')">
+      Cours ({{ cours().length }})
+    </button>
+  </nav>
+
+  @if (onglet() === 'apercu') {
+    <div class="admin__kpis anim-apparition">
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ utilisateurs().length }}</span>
+        <span class="admin__kpi-libelle">Utilisateurs</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ nombreEtudiants() }}</span>
+        <span class="admin__kpi-libelle">Etudiants</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ nombreEnseignants() }}</span>
+        <span class="admin__kpi-libelle">Enseignants</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ nombreAdmins() }}</span>
+        <span class="admin__kpi-libelle">Administrateurs</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ cours().length }}</span>
+        <span class="admin__kpi-libelle">Cours</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ nombreCoursActifs() }}</span>
+        <span class="admin__kpi-libelle">Cours actifs</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ nombreCoursInactifs() }}</span>
+        <span class="admin__kpi-libelle">Cours inactifs</span>
+      </div>
+      <div class="carte admin__kpi">
+        <span class="admin__kpi-valeur">{{ nombreInscriptions() }}</span>
+        <span class="admin__kpi-libelle">Inscriptions</span>
+      </div>
+    </div>
+  }
+
+  @if (onglet() === 'utilisateurs') {
+    <div class="admin__barre-outils anim-apparition">
+      <input
+        class="admin__recherche"
+        type="search"
+        placeholder="Rechercher un nom, un email..."
+        [ngModel]="rechercheUtilisateurs()"
+        (ngModelChange)="rechercherUtilisateurs($event)"
+      />
+      <div class="admin__filtres">
+        <button type="button" [class.est-actif]="filtreRole() === 'TOUS'" (click)="filtrerRole('TOUS')">Tous</button>
+        <button type="button" [class.est-actif]="filtreRole() === 'ETUDIANT'" (click)="filtrerRole('ETUDIANT')">Etudiants</button>
+        <button type="button" [class.est-actif]="filtreRole() === 'ENSEIGNANT'" (click)="filtrerRole('ENSEIGNANT')">Enseignants</button>
+        <button type="button" [class.est-actif]="filtreRole() === 'ADMINISTRATEUR'" (click)="filtrerRole('ADMINISTRATEUR')">Admins</button>
+      </div>
+    </div>
+
+    <div class="carte admin__scroll">
+      <table class="admin__table">
+        <thead>
+          <tr>
+            <th>Nom</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Membre depuis</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of utilisateursPage(); track u.id) {
+            <tr>
+              <td>{{ u.prenom }} {{ u.nom }}</td>
+              <td>{{ u.email }}</td>
+              <td><span class="etiquette">{{ u.role }}</span></td>
+              <td>{{ u.dateCreation | date: 'dd/MM/yyyy' }}</td>
+            </tr>
+          } @empty {
+            <tr><td colspan="4" class="admin__vide">Aucun utilisateur ne correspond.</td></tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <app-pagination
+      [pageActuelle]="pageUtilisateurs()"
+      [totalElements]="utilisateursFiltres().length"
+      [taillePage]="taillePage"
+      (changerPage)="pageUtilisateurs.set($event)"
+    />
+  }
+
+  @if (onglet() === 'cours') {
+    <div class="admin__barre-outils anim-apparition">
+      <input
+        class="admin__recherche"
+        type="search"
+        placeholder="Rechercher un cours, un enseignant..."
+        [ngModel]="rechercheCours()"
+        (ngModelChange)="rechercherCours($event)"
+      />
+      <div class="admin__filtres">
+        <button type="button" [class.est-actif]="filtreStatut() === 'TOUS'" (click)="filtrerStatut('TOUS')">Tous</button>
+        <button type="button" [class.est-actif]="filtreStatut() === 'ACTIFS'" (click)="filtrerStatut('ACTIFS')">Actifs</button>
+        <button type="button" [class.est-actif]="filtreStatut() === 'INACTIFS'" (click)="filtrerStatut('INACTIFS')">Inactifs</button>
+      </div>
+    </div>
+
+    @if (chargement()) {
+      <p class="admin__etat">Chargement des cours...</p>
+    } @else {
+      <div class="carte admin__scroll">
+        <table class="admin__table">
+          <thead>
+            <tr>
+              <th>Titre</th>
+              <th>Enseignant</th>
+              <th>Categorie</th>
+              <th>Inscrits</th>
+              <th>Chapitres</th>
+              <th>Statut</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (c of coursPagine(); track c.id) {
+              <tr>
+                <td>{{ c.titre }}</td>
+                <td>{{ c.enseignantNom }}</td>
+                <td>{{ c.categorie }}</td>
+                <td>{{ c.nombreInscrits }}</td>
+                <td>{{ c.nombreChapitres }}</td>
+                <td>
+                  <span class="etiquette" [class.admin__inactif]="!c.actif">
+                    {{ c.actif ? 'Actif' : 'Inactif' }}
+                  </span>
+                </td>
+                <td>
+                  <button
+                    class="bouton bouton--secondaire admin__bouton-table"
+                    type="button"
+                    [disabled]="statutEnCours() === c.id"
+                    (click)="basculerStatut(c)"
+                  >
+                    {{ c.actif ? 'Desactiver' : 'Activer' }}
+                  </button>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="7" class="admin__vide">Aucun cours ne correspond.</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <app-pagination
+        [pageActuelle]="pageCours()"
+        [totalElements]="coursFiltres().length"
+        [taillePage]="taillePage"
+        (changerPage)="pageCours.set($event)"
+      />
+    }
+  }
+</section>

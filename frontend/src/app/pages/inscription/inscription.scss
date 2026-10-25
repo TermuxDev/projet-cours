@@ -1,0 +1,158 @@
+.inscription {
+  display: flex;
+  justify-content: center;
+  padding: 3rem 1.5rem 4rem;
+}
+
+.inscription__carte {
+  width: 100%;
+  max-width: 480px;
+  padding: 2.5rem 2.25rem;
+  text-align: center;
+  background: var(--carte);
+}
+
+.inscription__sous-titre {
+  color: #5a5368;
+}
+
+.inscription__formulaire {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+  margin-top: 1.5rem;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+  }
+
+  input {
+    width: 100%;
+    border: 2.5px solid var(--bordure);
+    border-radius: 0.75rem;
+    padding: 0.7rem 0.9rem;
+    font-size: 1rem;
+    font-family: var(--police-texte);
+
+    &:focus {
+      outline: none;
+      border-color: var(--primaire);
+    }
+  }
+
+  button[type='submit'] {
+    margin-top: 0.5rem;
+    justify-content: center;
+  }
+}
+
+.inscription__ligne {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.inscription__roles {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.inscription__role {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border: 2.5px solid var(--bordure);
+  border-radius: 0.75rem;
+  padding: 0.75rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+
+  input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  &--actif {
+    background: var(--accent);
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+.inscription__champ-mdp {
+  position: relative;
+  display: block;
+
+  input {
+    padding-right: 2.75rem;
+  }
+}
+
+.inscription__oeil {
+  position: absolute;
+  top: 50%;
+  right: 0.5rem;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem;
+}
+
+.inscription__code {
+  text-align: center;
+  font-size: 1.6rem !important;
+  font-weight: 700;
+  letter-spacing: 0.5rem;
+  font-family: 'Courier New', monospace;
+}
+
+.inscription__erreur {
+  background: #ffe3da;
+  border: 2px solid var(--primaire-fonce);
+  border-radius: 0.65rem;
+  padding: 0.6rem 0.8rem;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.inscription__bas {
+  margin-top: 1.25rem;
+  font-size: 0.85rem;
+  color: #6a6378;
+
+  a {
+    color: var(--secondaire);
+    font-weight: 700;
+  }
+}
+
+.inscription__lien-bouton {
+  background: none;
+  border: none;
+  color: var(--secondaire);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: underline;
+  padding: 0;
+}
+
+@media (max-width: 480px) {
+  .inscription__ligne {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,0 +1,108 @@
+<section class="conteneur inscription">
+  <div class="carte inscription__carte anim-apparition">
+    <app-mascotte taille="grande" />
+
+    @if (etape() === 'details') {
+      <h1>Rejoins <span class="souligne">Cours+</span></h1>
+      <p class="inscription__sous-titre">Cree ton compte pour t'inscrire a des cours ou en publier.</p>
+
+      <form [formGroup]="formulaire" (ngSubmit)="soumettreDetails()" class="inscription__formulaire">
+        <div class="inscription__roles">
+          <label class="inscription__role" [class.inscription__role--actif]="formulaire.controls.role.value === 'ETUDIANT'">
+            <input type="radio" formControlName="role" value="ETUDIANT" />
+            🎓 Etudiant
+          </label>
+          <label class="inscription__role" [class.inscription__role--actif]="formulaire.controls.role.value === 'ENSEIGNANT'">
+            <input type="radio" formControlName="role" value="ENSEIGNANT" />
+            📘 Enseignant
+          </label>
+        </div>
+
+        <div class="inscription__ligne">
+          <label>
+            Prenom
+            <input type="text" formControlName="prenom" placeholder="Ton prenom" />
+          </label>
+          <label>
+            Nom
+            <input type="text" formControlName="nom" placeholder="Ton nom" />
+          </label>
+        </div>
+
+        <label>
+          Adresse e-mail
+          <input type="email" formControlName="email" placeholder="toi@exemple.com" />
+        </label>
+
+        <label>
+          Mot de passe
+          <span class="inscription__champ-mdp">
+            <input
+              [type]="motDePasseVisible() ? 'text' : 'password'"
+              formControlName="motDePasse"
+              placeholder="6 caracteres minimum"
+            />
+            <button
+              type="button"
+              class="inscription__oeil"
+              [attr.aria-label]="motDePasseVisible() ? 'Masquer le mot de passe' : 'Afficher le mot de passe'"
+              (click)="motDePasseVisible.set(!motDePasseVisible())"
+            >
+              {{ motDePasseVisible() ? '🙈' : '👁️' }}
+            </button>
+          </span>
+        </label>
+
+        @if (erreur()) {
+          <p class="inscription__erreur">⚠️ {{ erreur() }}</p>
+        }
+
+        <button type="submit" class="bouton" [disabled]="enCours()">
+          {{ enCours() ? 'Creation...' : 'Creer mon compte' }}
+        </button>
+      </form>
+
+      <p class="inscription__bas">
+        Deja un compte ? <a routerLink="/connexion">Se connecter</a>
+      </p>
+    } @else {
+      <h1>Verifie ta <span class="souligne">boite mail</span></h1>
+      <p class="inscription__sous-titre">
+        On a envoye un code a 6 chiffres a <strong>{{ formulaire.controls.email.value }}</strong>.
+      </p>
+
+      <form [formGroup]="formulaireOtp" (ngSubmit)="soumettreOtp()" class="inscription__formulaire">
+        <label>
+          Code de verification
+          <input
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            formControlName="code"
+            placeholder="123456"
+            class="inscription__code"
+          />
+        </label>
+
+        @if (erreur()) {
+          <p class="inscription__erreur">⚠️ {{ erreur() }}</p>
+        }
+
+        <button type="submit" class="bouton" [disabled]="enCours()">
+          {{ enCours() ? 'Verification...' : 'Confirmer mon compte' }}
+        </button>
+      </form>
+
+      <p class="inscription__bas">
+        @if (renvoiConfirme()) {
+          Nouveau code envoye ✅
+        } @else {
+          Rien recu ?
+          <button type="button" class="inscription__lien-bouton" [disabled]="renvoiEnCours()" (click)="renvoyerCode()">
+            {{ renvoiEnCours() ? 'Envoi...' : 'Renvoyer le code' }}
+          </button>
+        }
+      </p>
+    }
+  </div>
+</section>

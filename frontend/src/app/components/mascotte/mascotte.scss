@@ -1,0 +1,64 @@
+:host {
+  display: inline-block;
+  animation: flotter 4s ease-in-out infinite;
+}
+
+// Largeur portee par le <svg> lui-meme (pas par :host) pour que le
+// conteneur se redimensionne vraiment selon [taille], au lieu de
+// garder une largeur fixe invisible qui pousse le reste de la mise
+// en page (bug constate sur mobile : bouton "Connexion" hors-ecran).
+.mascotte {
+  width: 140px;
+  height: auto;
+  overflow: visible;
+  display: block;
+}
+
+.mascotte--petite { width: 56px; }
+.mascotte--grande { width: 220px; }
+
+.mascotte__corps { fill: var(--secondaire); stroke: var(--encre); stroke-width: 4; }
+.mascotte__ventre { fill: var(--fond); stroke: var(--encre); stroke-width: 3; }
+.mascotte__tuft { fill: var(--primaire); stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+.mascotte__bec { fill: var(--accent); stroke: var(--encre); stroke-width: 3; stroke-linejoin: round; }
+
+.mascotte__oeil-fond { fill: #fff; stroke: var(--encre); stroke-width: 3; }
+.mascotte__pupille { fill: var(--encre); }
+
+.mascotte__paupiere {
+  fill: var(--secondaire);
+  transform-origin: center;
+  animation: cligner 5s ease-in-out infinite;
+}
+
+.mascotte__paupiere:nth-of-type(2) {
+  animation-delay: 0.08s;
+}
+
+.mascotte__chapeau {
+  rect { fill: var(--encre); }
+  polygon { fill: var(--encre); }
+}
+
+.mascotte__gland { fill: var(--accent); }
+.mascotte__gland-fil { stroke: var(--accent); stroke-width: 2; }
+
+.mascotte__aile {
+  fill: var(--secondaire-claire);
+  stroke: var(--encre);
+  stroke-width: 3;
+  transform-origin: top center;
+}
+
+.mascotte__aile--gauche { animation: agiter-aile 3.2s ease-in-out infinite; }
+.mascotte__aile--droite { animation: agiter-aile 3.2s ease-in-out infinite reverse; }
+
+@keyframes cligner {
+  0%, 92%, 100% { transform: scaleY(0); }
+  96% { transform: scaleY(1); }
+}
+
+@keyframes agiter-aile {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-8deg); }
+}

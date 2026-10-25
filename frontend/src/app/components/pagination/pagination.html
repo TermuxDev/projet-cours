@@ -1,0 +1,13 @@
+@if (totalPages() > 1) {
+  <nav class="pagination" aria-label="Pagination">
+    <button type="button" class="pagination__fleche" [disabled]="pageActuelle() === 1" (click)="aller(pageActuelle() - 1)">
+      ← Precedent
+    </button>
+
+    <span class="pagination__info">Page {{ pageActuelle() }} / {{ totalPages() }}</span>
+
+    <button type="button" class="pagination__fleche" [disabled]="pageActuelle() === totalPages()" (click)="aller(pageActuelle() + 1)">
+      Suivant →
+    </button>
+  </nav>
+}

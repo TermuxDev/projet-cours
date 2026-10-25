@@ -1,0 +1,58 @@
+<section class="conteneur etudiant">
+  <div class="carte etudiant__profil anim-apparition">
+    <div>
+      <span class="etiquette">Espace etudiant</span>
+      <h1>{{ auth.utilisateurConnecte()?.prenom }} {{ auth.utilisateurConnecte()?.nom }}</h1>
+      <p class="etudiant__email">{{ auth.utilisateurConnecte()?.email }}</p>
+    </div>
+    <div class="etudiant__kpis">
+      <div class="etudiant__kpi">
+        <span class="etudiant__kpi-valeur">{{ inscriptions().length }}</span>
+        <span>Cours suivis</span>
+      </div>
+      <div class="etudiant__kpi">
+        <span class="etudiant__kpi-valeur">{{ nombreTermines() }}</span>
+        <span>Termines</span>
+      </div>
+      <div class="etudiant__kpi">
+        <span class="etudiant__kpi-valeur">{{ favoris().length }}</span>
+        <span>Favoris</span>
+      </div>
+    </div>
+  </div>
+
+  <h2>Mes cours</h2>
+  @if (chargement()) {
+    <p class="etudiant__etat">Chargement...</p>
+  } @else if (inscriptions().length === 0) {
+    <p class="etudiant__etat">
+      Tu n'es inscrit a aucun cours pour le moment. <a routerLink="/cours">Parcourir le catalogue →</a>
+    </p>
+  } @else {
+    <div class="etudiant__liste-cours">
+      @for (inscription of inscriptions(); track inscription.id) {
+        <a [routerLink]="['/cours', inscription.coursId]" class="carte etudiant__ligne-cours">
+          <div class="etudiant__ligne-info">
+            <h3>{{ inscription.coursTitre }}</h3>
+            <span>{{ inscription.nombreChapitres }} chapitres</span>
+          </div>
+          <div class="etudiant__ligne-progression">
+            <div class="etudiant__barre">
+              <div class="etudiant__barre-remplissage" [style.width.%]="inscription.pourcentageProgression"></div>
+            </div>
+            <span>{{ inscription.pourcentageProgression }}%</span>
+          </div>
+        </a>
+      }
+    </div>
+  }
+
+  @if (favoris().length > 0) {
+    <h2>Mes favoris</h2>
+    <div class="etudiant__grille-favoris">
+      @for (cours of favoris(); track cours.id; let i = $index) {
+        <app-carte-cours [cours]="cours" [indice]="i" />
+      }
+    </div>
+  }
+</section>

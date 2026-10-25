@@ -1,0 +1,39 @@
+<section class="conteneur catalogue__hero">
+  <div class="catalogue__hero-texte anim-apparition">
+    <span class="etiquette">Apprentissage interactif</span>
+    <h1>Des cours <span class="souligne">passionnants</span>,<br />par de vrais enseignants.</h1>
+    <p>Choisis un cours, avance chapitre par chapitre et suis ta progression en temps reel.</p>
+
+    <input
+      class="catalogue__recherche"
+      type="search"
+      placeholder="Rechercher un cours, une categorie..."
+      [ngModel]="recherche()"
+      (ngModelChange)="rechercher($event)"
+    />
+  </div>
+
+  <app-mascotte taille="grande" class="catalogue__mascotte" />
+</section>
+
+<section class="conteneur catalogue__contenu">
+  @if (chargement()) {
+    <p class="catalogue__etat">Chargement des cours...</p>
+  } @else if (erreur()) {
+    <p class="catalogue__etat catalogue__etat--erreur">{{ erreur() }}</p>
+  } @else if (coursFiltres().length === 0) {
+    <p class="catalogue__etat">Aucun cours ne correspond a ta recherche.</p>
+  } @else {
+    <div class="catalogue__grille">
+      @for (cours of coursPage(); track cours.id; let i = $index) {
+        <app-carte-cours [cours]="cours" [indice]="i" />
+      }
+    </div>
+    <app-pagination
+      [pageActuelle]="pageActuelle()"
+      [totalElements]="coursFiltres().length"
+      [taillePage]="taillePage"
+      (changerPage)="pageActuelle.set($event)"
+    />
+  }
+</section>

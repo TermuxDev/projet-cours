@@ -1,0 +1,19 @@
+<a class="carte carte-cours anim-apparition" [class]="motif" [routerLink]="['/cours', cours().id]">
+  <div class="carte-cours__vignette">
+    <span class="carte-cours__initiale">{{ cours().titre.charAt(0) }}</span>
+  </div>
+
+  <div class="carte-cours__corps">
+    @if (cours().categorie) {
+      <span class="etiquette">{{ cours().categorie }}</span>
+    }
+    <h3>{{ cours().titre }}</h3>
+    <p>{{ cours().description }}</p>
+
+    <div class="carte-cours__pied">
+      <span>👤 {{ cours().enseignantNom }}</span>
+      <span>📘 {{ cours().nombreChapitres }} chapitres</span>
+      <span>🎓 {{ cours().nombreInscrits }} inscrits</span>
+    </div>
+  </div>
+</a>

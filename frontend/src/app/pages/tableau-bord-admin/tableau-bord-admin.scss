@@ -1,0 +1,152 @@
+.admin {
+  padding: 3rem 1.5rem 4rem;
+
+  h1 {
+    margin: 0.4rem 0 1.75rem;
+  }
+}
+
+.admin__onglets {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  border-bottom: 2.5px solid var(--fond-alterne);
+
+  button {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    padding: 0.75rem 0.25rem;
+    margin-bottom: -2.5px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #6a6378;
+
+    &.est-actif {
+      color: var(--secondaire);
+      border-bottom-color: var(--primaire);
+    }
+  }
+}
+
+.admin__kpis {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1.25rem;
+}
+
+.admin__kpi {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: var(--carte);
+}
+
+.admin__kpi-valeur {
+  font-family: var(--police-titre);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--secondaire);
+}
+
+.admin__kpi-libelle {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6a6378;
+}
+
+.admin__barre-outils {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.admin__recherche {
+  flex: 1;
+  min-width: 220px;
+  max-width: 380px;
+  border: 2.5px solid var(--bordure);
+  border-radius: 999px;
+  padding: 0.65rem 1.1rem;
+  font-size: 0.9rem;
+  font-family: var(--police-texte);
+
+  &:focus {
+    outline: none;
+    border-color: var(--primaire);
+  }
+}
+
+.admin__filtres {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+
+  button {
+    border: 2px solid var(--bordure);
+    border-radius: 999px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background: #fff;
+
+    &.est-actif {
+      background: var(--encre);
+      color: #fff;
+    }
+  }
+}
+
+.admin__scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0;
+  background: var(--carte);
+}
+
+.admin__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  white-space: nowrap;
+
+  th, td {
+    text-align: left;
+    padding: 0.85rem 1.1rem;
+  }
+
+  thead {
+    background: var(--fond-alterne);
+
+    th {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  tbody tr:not(:last-child) {
+    border-bottom: 1px solid var(--fond-alterne);
+  }
+}
+
+.admin__bouton-table {
+  padding: 0.4rem 0.9rem;
+  font-size: 0.8rem;
+}
+
+.admin__inactif {
+  background: #e4e1ea;
+}
+
+.admin__vide,
+.admin__etat {
+  text-align: center;
+  padding: 2rem 0;
+  font-weight: 600;
+  color: #6a6378;
+}
